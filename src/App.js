@@ -1,28 +1,40 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
+import Counter from './Counter'
+
+import { decorate, computed, observable } from 'mobx'
+import { observer } from 'mobx-react'
+
+import myDataStore from './DataStore'
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+
+    this.value = 0
+  }
+
+  increment = event => {
+    this.value++
+  }
+
+  decrement = event => {
+    this.value--
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Counter increment={this.increment} decrement={this.decrement} value={this.value} />
+        <Counter increment={this.increment} decrement={this.decrement} value={this.value} />
+        <Counter increment={this.increment} decrement={this.decrement} value={this.value} />
       </div>
-    );
+    )
   }
 }
 
-export default App;
+decorate(App, {
+  value: observable
+})
+
+export default observer(App)
